@@ -1,0 +1,33 @@
+<table id="myTable" border="1">
+    <tr>
+        <td>username</td>
+    </tr>
+</table>
+
+<script>
+    function addToTable(text) {
+        var jsonData = JSON.parse(text);
+        console.log(text);
+        var table = document.getElementById("myTable");
+        for (var i = 0; i < jsonData.length; i++) {
+            var user = jsonData[i];
+            var row = table.insertRow(i);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = user.username;
+        }
+    }
+    function readTextFile(file, callback) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, true);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4 && rawFile.status == "200") {
+                callback(rawFile.responseText);
+            }
+        }
+        rawFile.send(null);
+    }
+    readTextFile("/test/file.json", function (text) {
+        addToTable(text);
+    });
+</script>
